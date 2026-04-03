@@ -508,15 +508,21 @@
                 </li>
               </ul>
 
-              <li class="nav-item">
-                <label class="text-warning" for="sorting-speed"> Speed: </label>
-                <input name="sorting-speed" type="range" class="form-range" id="speed-slider" value="3" min="1"
-                  max="5" />
+              <li class="nav-item mr-4">
+                <div class="d-flex flex-column">
+                  <label class="text-warning" for="sorting-speed"> Speed: </label>
+                  <input name="sorting-speed" type="range" class="form-range" id="speed-slider" value="3" min="1"
+                    max="5" />
+                  <small class="text-white" id="speed-value">Medium</small>
+                </div>
               </li>
               <li class="nav-item">
-                <label class="text-warning" for="array-size"> Array Size: </label>
-                <input name="array-size" type="range" class="form-range" id="array-size-slider" value="20" min="5"
-                  max="50" />
+                <div class="d-flex flex-column">
+                  <label class="text-warning" for="array-size"> Array Size: </label>
+                  <input name="array-size" type="range" class="form-range" id="array-size-slider" value="20" min="5"
+                    max="50" />
+                  <small class="text-white" id="array-size-value">20</small>
+                </div>
               </li>
             </div>
             <!-- Collapsible wrapper -->
@@ -548,6 +554,19 @@
           </div>
         </section>
         <section id="sorting-visualization">
+          <div class="mb-3">
+            <div class="form-group">
+              <label class="text-warning" for="manual-input">Manual Array Input (Optional):</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="manual-input"
+                  placeholder="Enter comma-separated values (e.g., 5,3,8,1,9)">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-info" type="button" id="apply-manual-input">Apply</button>
+                </div>
+              </div>
+              <small class="text-muted">Leave empty for random array generation</small>
+            </div>
+          </div>
           <div id="bars-container"></div>
         </section>
         <section id="sorting-info">

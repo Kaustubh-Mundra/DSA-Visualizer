@@ -8,11 +8,11 @@ class SortingVisualizer {
         this.currentLanguage = 'java';
         
         this.speedMap = {
-            1: 2000,
-            2: 1000,
-            3: 500,
-            4: 200,
-            5: 50
+            1: { delay: 2000, label: 'Very Slow' },
+            2: { delay: 1000, label: 'Slow' },
+            3: { delay: 500, label: 'Medium' },
+            4: { delay: 200, label: 'Fast' },
+            5: { delay: 50, label: 'Very Fast' }
         };
 
         this.complexityData = {
@@ -368,6 +368,7 @@ void heapify(int arr[], int n, int i) {
         this.generateRandomArray();
         this.setupEventListeners();
         this.renderBars();
+        this.updateSliderDisplays();
     }
 
     setupEventListeners() {
@@ -387,11 +388,19 @@ void heapify(int arr[], int n, int i) {
         // Sliders
         document.getElementById('speed-slider').addEventListener('input', (e) => {
             this.animationSpeed = parseInt(e.target.value);
+            document.getElementById('speed-value').textContent = this.speedMap[this.animationSpeed].label;
         });
 
         document.getElementById('array-size-slider').addEventListener('input', (e) => {
             this.arraySize = parseInt(e.target.value);
+            document.getElementById('array-size-value').textContent = this.arraySize;
             this.generateRandomArray();
+        });
+
+        // Manual input
+        document.getElementById('apply-manual-input').addEventListener('click', () => this.applyManualInput());
+        document.getElementById('manual-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.applyManualInput();
         });
 
         // Language selection
@@ -787,8 +796,41 @@ void heapify(int arr[], int n, int i) {
     }
 
     delay(customDelay) {
-        const delayMs = customDelay || this.speedMap[this.animationSpeed];
+        const delayMs = customDelay || this.speedMap[this.animationSpeed].delay;
         return new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+
+    updateSliderDisplays() {
+        document.getElementById('speed-value').textContent = this.speedMap[this.animationSpeed].label;
+        document.getElementById('array-size-value').textContent = this.arraySize;
+    }
+
+    applyManualInput() {
+        if (this.isAnimating) return;
+        
+        const input = document.getElementById('manual-input').value.trim();
+        if (!input) {
+            this.generateRandomArray();
+            return;
+        }
+        
+        const values = input.split(',').map(v => parseInt(v.trim())).filter(v => !isNaN(v) && v > 0);
+        
+        if (values.length === 0) {
+            alert('Please enter valid positive numbers separated by commas');
+            return;
+        }
+        
+        if (values.length > 50) {
+            alert('Maximum array size is 50 elements');
+            return;
+        }
+        
+        this.array = values;
+        this.arraySize = values.length;
+        document.getElementById('array-size-slider').value = this.arraySize;
+        document.getElementById('array-size-value').textContent = this.arraySize;
+        this.renderBars();
     }
 }
 

@@ -541,13 +541,11 @@ svg{
 
 .sorting-bar.comparing{
   background-color: rgba(17,104,217,1);
-  border-radius: 100%;
   animation: compare-pulse 0.5s ease-in-out;
 }
 
 .sorting-bar.swapping{
   background-color: #ffd400;
-  border-radius: 100%;
   animation: swap-pulse 0.5s ease-in-out;
 }
 
