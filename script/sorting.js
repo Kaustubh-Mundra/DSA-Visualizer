@@ -6,6 +6,7 @@ class SortingVisualizer {
         this.isAnimating = false;
         this.selectedAlgorithm = '';
         this.currentLanguage = 'java';
+        this.shouldStop = false;
         
         this.speedMap = {
             1: { delay: 2000, label: 'Very Slow' },
@@ -54,14 +55,14 @@ class SortingVisualizer {
             }
         };
 
-        this.algorithmCodes = {
+        this.algorithmCode = {
             'bubble-sort': {
                 java: `public void bubbleSort(int[] arr) {
     int n = arr.length;
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                // swap arr[j+1] and arr[j]
+                // swap arr[j] and arr[j+1]
                 int temp = arr[j];
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
@@ -74,13 +75,13 @@ class SortingVisualizer {
     for i in range(n - 1):
         for j in range(n - i - 1):
             if arr[j] > arr[j + 1]:
-                # swap arr[j+1] and arr[j]
+                # swap arr[j] and arr[j+1]
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]`,
                 cpp: `void bubbleSort(int arr[], int n) {
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                // swap arr[j+1] and arr[j]
+                // swap arr[j] and arr[j+1]
                 int temp = arr[j];
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
@@ -97,30 +98,13 @@ class SortingVisualizer {
         mergeSort(arr, m + 1, r);
         merge(arr, l, m, r);
     }
-}
-
-void merge(int[] arr, int l, int m, int r) {
-    // Merge two sorted subarrays
 }`,
-                python: `def merge_sort(arr):
-    if len(arr) > 1:
-        mid = len(arr) // 2
-        left = arr[:mid]
-        right = arr[mid:]
-        
-        merge_sort(left)
-        merge_sort(right)
-        
-        i = j = k = 0
-        
-        while i < len(left) and j < len(right):
-            if left[i] <= right[j]:
-                arr[k] = left[i]
-                i += 1
-            else:
-                arr[k] = right[j]
-                j += 1
-            k += 1`,
+                python: `def merge_sort(arr, l, r):
+    if l < r:
+        m = l + (r - l) // 2
+        merge_sort(arr, l, m)
+        merge_sort(arr, m + 1, r)
+        merge(arr, l, m, r)`,
                 cpp: `void mergeSort(int arr[], int l, int r) {
     if (l < r) {
         int m = l + (r - l) / 2;
@@ -137,149 +121,47 @@ void merge(int[] arr, int l, int m, int r) {
         quickSort(arr, low, pi - 1);
         quickSort(arr, pi + 1, high);
     }
-}
-
-int partition(int[] arr, int low, int high) {
-    int pivot = arr[high];
-    int i = (low - 1);
-    
-    for (int j = low; j < high; j++) {
-        if (arr[j] < pivot) {
-            i++;
-            // swap arr[i] and arr[j]
-        }
-    }
-    // swap arr[i+1] and arr[high]
-    return i + 1;
 }`,
                 python: `def quick_sort(arr, low, high):
     if low < high:
         pi = partition(arr, low, high)
         quick_sort(arr, low, pi - 1)
-        quick_sort(arr, pi + 1, high)
-
-def partition(arr, low, high):
-    pivot = arr[high]
-    i = low - 1
-    
-    for j in range(low, high):
-        if arr[j] < pivot:
-            i += 1
-            # swap arr[i] and arr[j]
-    
-    # swap arr[i+1] and arr[high]
-    return i + 1`,
+        quick_sort(arr, pi + 1, high)`,
                 cpp: `void quickSort(int arr[], int low, int high) {
     if (low < high) {
         int pi = partition(arr, low, high);
         quickSort(arr, low, pi - 1);
         quickSort(arr, pi + 1, high);
     }
-}
-
-int partition(int arr[], int low, int high) {
-    int pivot = arr[high];
-    int i = (low - 1);
-    
-    for (int j = low; j < high; j++) {
-        if (arr[j] < pivot) {
-            i++;
-            // swap arr[i] and arr[j]
-        }
-    }
-    // swap arr[i+1] and arr[high]
-    return i + 1;
 }`
             },
             'heap-sort': {
                 java: `public void heapSort(int[] arr) {
     int n = arr.length;
-    
-    // Build heap
     for (int i = n / 2 - 1; i >= 0; i--)
         heapify(arr, n, i);
-    
-    // Extract elements from heap
     for (int i = n - 1; i > 0; i--) {
-        // Move current root to end
         int temp = arr[0];
         arr[0] = arr[i];
         arr[i] = temp;
-        
         heapify(arr, i, 0);
-    }
-}
-
-void heapify(int[] arr, int n, int i) {
-    int largest = i;
-    int l = 2 * i + 1;
-    int r = 2 * i + 2;
-    
-    if (l < n && arr[l] > arr[largest])
-        largest = l;
-    
-    if (r < n && arr[r] > arr[largest])
-        largest = r;
-    
-    if (largest != i) {
-        // swap arr[i] and arr[largest]
-        heapify(arr, n, largest);
     }
 }`,
                 python: `def heap_sort(arr):
     n = len(arr)
-    
-    # Build heap
     for i in range(n // 2 - 1, -1, -1):
         heapify(arr, n, i)
-    
-    # Extract elements from heap
     for i in range(n - 1, 0, -1):
-        # Move current root to end
         arr[i], arr[0] = arr[0], arr[i]
-        heapify(arr, i, 0)
-
-def heapify(arr, n, i):
-    largest = i
-    l = 2 * i + 1
-    r = 2 * i + 2
-    
-    if l < n and arr[l] > arr[largest]:
-        largest = l
-    
-    if r < n and arr[r] > arr[largest]:
-        largest = r
-    
-    if largest != i:
-        # swap arr[i] and arr[largest]
-        heapify(arr, n, largest)`,
+        heapify(arr, i, 0)`,
                 cpp: `void heapSort(int arr[], int n) {
-    // Build heap
     for (int i = n / 2 - 1; i >= 0; i--)
         heapify(arr, n, i);
-    
-    // Extract elements from heap
     for (int i = n - 1; i > 0; i--) {
-        // Move current root to end
-        swap(arr[0], arr[i]);
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
         heapify(arr, i, 0);
-    }
-}
-
-void heapify(int arr[], int n, int i) {
-    int largest = i;
-    int l = 2 * i + 1;
-    int r = 2 * i + 2;
-    
-    if (l < n && arr[l] > arr[largest])
-        largest = l;
-    
-    if (r < n && arr[r] > arr[largest])
-        largest = r;
-    
-    if (largest != i) {
-        // swap arr[i] and arr[largest]
-        heapify(arr, n, largest);
     }
 }`
             },
@@ -289,7 +171,6 @@ void heapify(int arr[], int n, int i) {
     for (int i = 1; i < n; ++i) {
         int key = arr[i];
         int j = i - 1;
-        
         while (j >= 0 && arr[j] > key) {
             arr[j + 1] = arr[j];
             j = j - 1;
@@ -301,17 +182,15 @@ void heapify(int arr[], int n, int i) {
     for i in range(1, len(arr)):
         key = arr[i]
         j = i - 1
-        
         while j >= 0 and arr[j] > key:
             arr[j + 1] = arr[j]
             j -= 1
-        
         arr[j + 1] = key`,
                 cpp: `void insertionSort(int arr[], int n) {
-    for (int i = 1; i < n; i++) {
-        int key = arr[i];
-        int j = i - 1;
-        
+    int i, key, j;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
         while (j >= 0 && arr[j] > key) {
             arr[j + 1] = arr[j];
             j = j - 1;
@@ -325,11 +204,9 @@ void heapify(int arr[], int n, int i) {
     int n = arr.length;
     for (int i = 0; i < n - 1; i++) {
         int min_idx = i;
-        for (int j = i + 1; j < n; j++) {
+        for (int j = i + 1; j < n; j++)
             if (arr[j] < arr[min_idx])
                 min_idx = j;
-        }
-        // swap arr[min_idx] and arr[i]
         int temp = arr[min_idx];
         arr[min_idx] = arr[i];
         arr[i] = temp;
@@ -342,17 +219,14 @@ void heapify(int arr[], int n, int i) {
         for j in range(i + 1, n):
             if arr[j] < arr[min_idx]:
                 min_idx = j
-        
-        # swap arr[min_idx] and arr[i]
         arr[i], arr[min_idx] = arr[min_idx], arr[i]`,
                 cpp: `void selectionSort(int arr[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        int min_idx = i;
-        for (int j = i + 1; j < n; j++) {
+    int i, j, min_idx;
+    for (i = 0; i < n - 1; i++) {
+        min_idx = i;
+        for (j = i + 1; j < n; j++)
             if (arr[j] < arr[min_idx])
                 min_idx = j;
-        }
-        // swap arr[min_idx] and arr[i]
         int temp = arr[min_idx];
         arr[min_idx] = arr[i];
         arr[i] = temp;
@@ -383,6 +257,7 @@ void heapify(int arr[], int n, int i) {
         // Control buttons
         document.getElementById('generate-array').addEventListener('click', () => this.generateRandomArray());
         document.getElementById('start-sorting').addEventListener('click', () => this.startSorting());
+        document.getElementById('stop-sorting').addEventListener('click', () => this.stopSorting());
         document.getElementById('reset-sorting').addEventListener('click', () => this.resetArray());
 
         // Sliders
@@ -418,49 +293,29 @@ void heapify(int arr[], int n, int i) {
         if (this.isAnimating) return;
         
         this.selectedAlgorithm = algorithmId;
+        document.getElementById('sorting-algorithms-grp-btn').textContent = 
+            algorithmId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
         document.getElementById('start-sorting').disabled = false;
         
-        // Update complexity display
-        const complexity = this.complexityData[algorithmId];
-        document.getElementById('best-time').textContent = complexity.best;
-        document.getElementById('average-time').textContent = complexity.average;
-        document.getElementById('worst-time').textContent = complexity.worst;
-        document.getElementById('space-complexity').textContent = complexity.space;
-        
-        // Update code display
+        this.updateComplexityDisplay();
         this.updateCodeDisplay();
-        
-        // Update button text
-        const algorithmNames = {
-            'bubble-sort': 'Bubble Sort',
-            'merge-sort': 'Merge Sort',
-            'quick-sort': 'Quick Sort',
-            'heap-sort': 'Heap Sort',
-            'insertion-sort': 'Insertion Sort',
-            'selection-sort': 'Selection Sort'
-        };
-        document.getElementById('sorting-algorithms-grp-btn').textContent = algorithmNames[algorithmId];
     }
 
     updateCodeDisplay() {
         if (!this.selectedAlgorithm) return;
         
-        const code = this.algorithmCodes[this.selectedAlgorithm][this.currentLanguage];
-        const codeDisplay = document.getElementById('code-display');
-        codeDisplay.innerHTML = `<code class="language-${this.currentLanguage}">${this.escapeHtml(code)}</code>`;
-        
-        // Add line numbers and highlighting capability
-        const lines = code.split('\n');
-        const numberedLines = lines.map((line, index) => 
-            `<span class="code-line" data-line="${index + 1}">${this.escapeHtml(line)}</span>`
-        ).join('\n');
-        codeDisplay.innerHTML = `<code class="language-${this.currentLanguage}">${numberedLines}</code>`;
+        const code = this.algorithmCode[this.selectedAlgorithm][this.currentLanguage];
+        document.getElementById('code-display').innerHTML = `<code class="language-${this.currentLanguage}">${code}</code>`;
     }
 
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+    updateComplexityDisplay() {
+        if (!this.selectedAlgorithm) return;
+        
+        const complexity = this.complexityData[this.selectedAlgorithm];
+        document.getElementById('best-time').textContent = complexity.best;
+        document.getElementById('average-time').textContent = complexity.average;
+        document.getElementById('worst-time').textContent = complexity.worst;
+        document.getElementById('space-complexity').textContent = complexity.space;
     }
 
     generateRandomArray() {
@@ -468,7 +323,7 @@ void heapify(int arr[], int n, int i) {
         
         this.array = [];
         for (let i = 0; i < this.arraySize; i++) {
-            this.array.push(Math.floor(Math.random() * 100) + 1);
+            this.array.push(Math.floor(Math.random() * 100) + 10);
         }
         this.renderBars();
     }
@@ -478,7 +333,7 @@ void heapify(int arr[], int n, int i) {
         container.innerHTML = '';
         
         const maxValue = Math.max(...this.array);
-        const containerHeight = 360; // 400px - 40px padding
+        const containerHeight = 360;
         
         this.array.forEach((value, index) => {
             const bar = document.createElement('div');
@@ -494,38 +349,58 @@ void heapify(int arr[], int n, int i) {
         if (this.isAnimating || !this.selectedAlgorithm) return;
         
         this.isAnimating = true;
+        this.shouldStop = false;
         this.disableControls();
         
-        switch (this.selectedAlgorithm) {
-            case 'bubble-sort':
-                await this.bubbleSort();
-                break;
-            case 'merge-sort':
-                await this.mergeSort(0, this.array.length - 1);
-                break;
-            case 'quick-sort':
-                await this.quickSort(0, this.array.length - 1);
-                break;
-            case 'heap-sort':
-                await this.heapSort();
-                break;
-            case 'insertion-sort':
-                await this.insertionSort();
-                break;
-            case 'selection-sort':
-                await this.selectionSort();
-                break;
+        // Reset all bars to unsorted state
+        this.resetBarsState();
+        
+        try {
+            switch (this.selectedAlgorithm) {
+                case 'bubble-sort':
+                    await this.bubbleSort();
+                    break;
+                case 'merge-sort':
+                    await this.mergeSort(0, this.array.length - 1);
+                    break;
+                case 'quick-sort':
+                    await this.quickSort(0, this.array.length - 1);
+                    break;
+                case 'heap-sort':
+                    await this.heapSort();
+                    break;
+                case 'insertion-sort':
+                    await this.insertionSort();
+                    break;
+                case 'selection-sort':
+                    await this.selectionSort();
+                    break;
+            }
+            
+            if (!this.shouldStop) {
+                await this.markAllSorted();
+            }
+        } catch (error) {
+            console.log('Sorting stopped:', error);
         }
         
-        await this.markAllSorted();
         this.isAnimating = false;
         this.enableControls();
+    }
+
+    stopSorting() {
+        if (this.isAnimating) {
+            this.shouldStop = true;
+            this.isAnimating = false;
+            this.enableControls();
+        }
     }
 
     async bubbleSort() {
         const n = this.array.length;
         for (let i = 0; i < n - 1; i++) {
             for (let j = 0; j < n - i - 1; j++) {
+                if (this.shouldStop) return;
                 await this.compare(j, j + 1);
                 if (this.array[j] > this.array[j + 1]) {
                     await this.swap(j, j + 1);
@@ -537,12 +412,12 @@ void heapify(int arr[], int n, int i) {
     }
 
     async mergeSort(left, right) {
-        if (left < right) {
-            const mid = Math.floor((left + right) / 2);
-            await this.mergeSort(left, mid);
-            await this.mergeSort(mid + 1, right);
-            await this.merge(left, mid, right);
-        }
+        if (left >= right || this.shouldStop) return;
+        
+        const mid = Math.floor((left + right) / 2);
+        await this.mergeSort(left, mid);
+        await this.mergeSort(mid + 1, right);
+        await this.merge(left, mid, right);
     }
 
     async merge(left, mid, right) {
@@ -552,7 +427,10 @@ void heapify(int arr[], int n, int i) {
         let i = 0, j = 0, k = left;
         
         while (i < leftArr.length && j < rightArr.length) {
+            if (this.shouldStop) return;
+            
             await this.compare(left + i, mid + 1 + j);
+            
             if (leftArr[i] <= rightArr[j]) {
                 this.array[k] = leftArr[i];
                 i++;
@@ -566,6 +444,7 @@ void heapify(int arr[], int n, int i) {
         }
         
         while (i < leftArr.length) {
+            if (this.shouldStop) return;
             this.array[k] = leftArr[i];
             this.updateBar(k, this.array[k]);
             i++;
@@ -574,6 +453,7 @@ void heapify(int arr[], int n, int i) {
         }
         
         while (j < rightArr.length) {
+            if (this.shouldStop) return;
             this.array[k] = rightArr[j];
             this.updateBar(k, this.array[k]);
             j++;
@@ -583,7 +463,7 @@ void heapify(int arr[], int n, int i) {
     }
 
     async quickSort(low, high) {
-        if (low < high) {
+        if (low < high && !this.shouldStop) {
             const pi = await this.partition(low, high);
             await this.quickSort(low, pi - 1);
             await this.quickSort(pi + 1, high);
@@ -595,12 +475,15 @@ void heapify(int arr[], int n, int i) {
         let i = low - 1;
         
         for (let j = low; j < high; j++) {
+            if (this.shouldStop) return i + 1;
+            
             await this.compare(j, high);
             if (this.array[j] < pivot) {
                 i++;
                 await this.swap(i, j);
             }
         }
+        
         await this.swap(i + 1, high);
         return i + 1;
     }
@@ -610,11 +493,13 @@ void heapify(int arr[], int n, int i) {
         
         // Build heap
         for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+            if (this.shouldStop) return;
             await this.heapify(n, i);
         }
         
         // Extract elements from heap
         for (let i = n - 1; i > 0; i--) {
+            if (this.shouldStop) return;
             await this.swap(0, i);
             this.markSorted(i);
             await this.heapify(i, 0);
@@ -649,21 +534,22 @@ void heapify(int arr[], int n, int i) {
 
     async insertionSort() {
         const n = this.array.length;
+        
         for (let i = 1; i < n; i++) {
+            if (this.shouldStop) return;
+            
             const key = this.array[i];
             let j = i - 1;
             
-            while (j >= 0) {
-                await this.compare(j, i);
-                if (this.array[j] > key) {
-                    this.array[j + 1] = this.array[j];
-                    this.updateBar(j + 1, this.array[j + 1]);
-                    j--;
-                    await this.delay();
-                } else {
-                    break;
-                }
+            while (j >= 0 && this.array[j] > key) {
+                if (this.shouldStop) return;
+                await this.compare(j, j + 1);
+                this.array[j + 1] = this.array[j];
+                this.updateBar(j + 1, this.array[j + 1]);
+                j--;
+                await this.delay();
             }
+            
             this.array[j + 1] = key;
             this.updateBar(j + 1, key);
             await this.delay();
@@ -672,10 +558,13 @@ void heapify(int arr[], int n, int i) {
 
     async selectionSort() {
         const n = this.array.length;
+        
         for (let i = 0; i < n - 1; i++) {
-            let minIdx = i;
+            if (this.shouldStop) return;
             
+            let minIdx = i;
             for (let j = i + 1; j < n; j++) {
+                if (this.shouldStop) return;
                 await this.compare(j, minIdx);
                 if (this.array[j] < this.array[minIdx]) {
                     minIdx = j;
@@ -743,6 +632,7 @@ void heapify(int arr[], int n, int i) {
     async markAllSorted() {
         const bars = document.querySelectorAll('.sorting-bar');
         for (let i = 0; i < bars.length; i++) {
+            if (this.shouldStop) return;
             bars[i].classList.add('sorted');
             await this.delay(20);
         }
@@ -771,6 +661,13 @@ void heapify(int arr[], int n, int i) {
         }
     }
 
+    resetBarsState() {
+        const bars = document.querySelectorAll('.sorting-bar');
+        bars.forEach(bar => {
+            bar.classList.remove('comparing', 'swapping', 'sorted');
+        });
+    }
+
     resetArray() {
         if (this.isAnimating) return;
         
@@ -779,6 +676,7 @@ void heapify(int arr[], int n, int i) {
 
     disableControls() {
         document.getElementById('start-sorting').disabled = true;
+        document.getElementById('stop-sorting').disabled = false;
         document.getElementById('generate-array').disabled = true;
         document.getElementById('reset-sorting').disabled = true;
         document.getElementById('array-size-slider').disabled = true;
@@ -788,6 +686,7 @@ void heapify(int arr[], int n, int i) {
 
     enableControls() {
         document.getElementById('start-sorting').disabled = false;
+        document.getElementById('stop-sorting').disabled = true;
         document.getElementById('generate-array').disabled = false;
         document.getElementById('reset-sorting').disabled = false;
         document.getElementById('array-size-slider').disabled = false;
@@ -796,6 +695,9 @@ void heapify(int arr[], int n, int i) {
     }
 
     delay(customDelay) {
+        if (this.shouldStop) {
+            throw new Error('Sorting stopped');
+        }
         const delayMs = customDelay || this.speedMap[this.animationSpeed].delay;
         return new Promise(resolve => setTimeout(resolve, delayMs));
     }
