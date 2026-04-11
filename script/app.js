@@ -25,7 +25,7 @@ document.querySelector("#bidirectional-dijkstra").addEventListener("click",() =>
 document.querySelector("#greedybest").addEventListener("click",() => makeChoice("Greedy Best First"));
 document.querySelector("#path-finder").addEventListener("click",pathFinderTab);
 document.querySelector("#minimum-spanning-tree").addEventListener("click",minimumSpanningTab);
-document.querySelector("#topological-sort").addEventListener("click",topologicalSortTab);
+
 document.querySelector("#sorting-algorithms").addEventListener("click",sortingAlgorithmsTab);
 let status = 0;
 let running = "";
@@ -76,14 +76,7 @@ function minimumSpanningTab(){
   // setTimeout(() => primToast.hide(),6500);
 }
 
-function topologicalSortTab(){
-  clearToasts();
-  // document.querySelector("#breakpoint-toggler").click();
-  // let kahnToastTriggerEl = document.getElementById('fail-kahn-toast')
-  // let kahnToast = new mdb.Toast(kahnToastTriggerEl)
-  // kahnToast.show()
-  // setTimeout(() => kahnToast.hide(),6500);
-}
+
 
 function sortingAlgorithmsTab(){
   clearToasts();
@@ -492,9 +485,6 @@ function clearToasts(){
   let shortcutToast = new mdb.Toast(shortcutToastTriggerEl)
   // let primToastTriggerEl = document.getElementById('prim-toast')
   // let primToast = new mdb.Toast(primToastTriggerEl)
-  let kahnToastTriggerEl = document.getElementById('fail-kahn-toast')
-  let kahnToast = new mdb.Toast(kahnToastTriggerEl)
-  kahnToast.hide()
   // primToast.hide()
   failToast.hide()
   infoToast.hide()

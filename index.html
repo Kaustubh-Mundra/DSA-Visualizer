@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <meta name="author" content="Hisham Maged" />
   <meta name="description"
-    content="Graph Algorithms visualizer project which visualizes Different types of graph algorithms such as Path-finding algorithms, Minimum Spanning Tree Algorithms, Topological Sorting" />
+    content="Graph Algorithms visualizer project which visualizes Different types of graph algorithms such as Path-finding algorithms, Minimum Spanning Tree Algorithms, Sorting Algorithms" />
   <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="favicons/apple-icon-72x72.png">
@@ -45,9 +45,7 @@
   <script defer type="text/javascript" src="script/vertix.js"></script>
   <script defer type="text/javascript" src="script/canvas.js"></script>
   <script defer type="text/javascript" src="script/sorting.js"></script>
-  <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.css" rel="stylesheet" type="text/css" />
-  <script defer type="text/javascript" src="script/network.js"></script>
+
 </head>
 
 <body>
@@ -61,10 +59,7 @@
       <a class="nav-link" id="minimum-spanning-tree" data-toggle="tab" href="#minimum-spanning-tree-tab" role="tab"
         aria-controls="ex3-tabs-2" aria-selected="false">Minimum Spanning Trees</a>
     </li>
-    <li class="nav-item" role="presentation">
-      <a class="nav-link" id="topological-sort" data-toggle="tab" href="#topological-sort-tab" role="tab"
-        aria-controls="ex3-tabs-3" aria-selected="false">Topological Sorting</a>
-    </li>
+
     <li class="nav-item" role="presentation">
       <a class="nav-link" id="sorting-algorithms" data-toggle="tab" href="#sorting-algorithms-tab" role="tab"
         aria-controls="ex3-tabs-4" aria-selected="false">Sorting Algorithms</a>
@@ -319,141 +314,7 @@
         </section>
       </main>
     </div>
-    <div class="tab-pane fade" id="topological-sort-tab" role="tabpanel" aria-labelledby="ex3-tab-3">
-      <header>
-        <nav class="buttons-container navbar navbar-expand-lg navbar-dark bg-dark">
-          <!-- Container wrapper -->
-          <div class="container-fluid">
-            <!-- Navbar brand -->
-            <a class="navbar-brand">Topological Sort</a>
-            <!-- Toggle button -->
-          </div>
-          <!-- Container wrapper -->
-        </nav>
-      </header>
-      <main>
-        <section id="network-helper">
-          <div>
-            <div id="topological-helper">
-              <p class="lead">Task Scheduling can be done via <em>Topological Sorting</em>.</p>
-              <p class="text-muted">Topological Sorting is applicable only on <abbr
-                  title="Directed Acyclic Graphs">DAGs</abbr>.</p>
-              <p class="text-muted"><em>Topological Sorting</em> by <b><u>Kahn's Algorithm</u></b> using List of tasks
-                below</p>
-            </div>
-            <div class="accordion" id="topological-sort-definition">
-              <div id="headingOne">
-                <h2>
-                  <button class="btn btn-link btn-block text-left pl-3" type="button" data-toggle="collapse"
-                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Topological Sorting
-                  </button>
-                </h2>
-              </div>
 
-              <div id="collapseOne" class="collapse pl-3" aria-labelledby="headingOne"
-                data-parent="#topological-sort-definition">
-                <blockquote class="blockquote"
-                  cite="https://en.wikipedia.org/wiki/Topological_sorting#:~:text=In%20computer%20science%2C%20a%20topological,before%20v%20in%20the%20ordering.">
-                  <p>In computer science, a topological sort or topological ordering of a directed graph is
-                    a linear ordering of its vertices such that for every directed edge uv from vertex u to vertex v, u
-                    comes before v in the ordering.
-                    For instance, the vertices of the graph may represent tasks to be performed,
-                    and the edges may represent constraints that one task must be performed before
-                    another; in this application, a topological ordering is just a valid sequence
-                    for the tasks. A topological ordering is possible if and only if the graph has
-                    no directed cycles, that is, if it is a directed acyclic graph (DAG)
-                  </p>
-                </blockquote>
-              </div>
-
-            </div>
-          </div>
-        </section>
-        <section id="network-container">
-          <form name="tasks">
-            <div id="tasks-input">
-              <div id="task-1-input" class="row g-3 align-items-center mt-1 ml-2">
-                <div class="form-outline col-auto mb-2 mr-2">
-                  <input type="text" name="task-1" class="form-control" placeholder="Buy Groceries"
-                    aria-describedby="task-1" required />
-                  <label class="form-label" for="task-1">Task #1</label>
-                </div>
-                <div class="form-outline col-auto">
-                  <input type="text" name="preq-1" class="form-control" placeholder="Dress" aria-describedby="preq-1"
-                    required />
-                  <label class="form-label" for="preq-1">Task #1 Prerequisites</label>
-                </div>
-                <div class="col-auto">
-                  <span id="textExample2" class="form-text mb-3">
-                    Prerequisites Must be comma separated Values
-                  </span>
-                </div>
-              </div>
-              <div id="task-2-input" hidden class="row g-3 align-items-center ml-2">
-                <div class="form-outline col-auto mb-2 mr-2">
-                  <input type="text" name="task-2" class="form-control" placeholder="Dress" aria-describedby="task-1"
-                    required />
-                  <label class="form-label" for="task-2">Task #2</label>
-                </div>
-                <div class="form-outline mb-2 col-auto">
-                  <input type="text" name="preq-2" class="form-control" placeholder="Wakeup" aria-describedby="preq-1"
-                    required />
-                  <label class="form-label" for="preq-2">Task #2 Prerequisites</label>
-                </div>
-              </div>
-              <div id="task-3-input" hidden class="row g-3 align-items-center ml-2">
-                <div class="form-outline col-auto mb-2 mr-2">
-                  <input type="text" name="task-3" placeholder="Wakeup" class="form-control" aria-describedby="task-1"
-                    required />
-                  <label class="form-label" for="task-1">Task #3</label>
-                </div>
-                <div class="form-outline mb-2 col-auto">
-                  <input type="text" name="preq-3" placeholder="Sleep" class="form-control" aria-describedby="preq-1"
-                    required />
-                  <label class="form-label" for="preq-3">Task #3 Prerequisites</label>
-                </div>
-              </div>
-              <div id="task-4-input" hidden class="row g-3 align-items-center ml-2">
-                <div class="form-outline col-auto mb-2 mr-2">
-                  <input type="text" name="task-4" placeholder="You're still here?" class="form-control"
-                    aria-describedby="task-1" required />
-                  <label class="form-label" for="task-4">Task #4</label>
-                </div>
-                <div class="form-outline mb-2 col-auto border">
-                  <input type="text" name="preq-4" class="form-control" placeholder="I'm out of ideas"
-                    aria-describedby="preq-1" required />
-                  <label class="form-label" for="preq-1">Task #4 Prerequisites</label>
-                </div>
-              </div>
-              <div id="task-5-input" hidden class="row g-3 align-items-center ml-2">
-                <div class="form-outline col-auto mb-2 mr-2">
-                  <input type="text" name="task-5" class="form-control" placeholder="Let's finish it with a cycle"
-                    aria-describedby="task-1" required />
-                  <label class="form-label" for="task-1">Task #5</label>
-                </div>
-                <div class="form-outline mb-2 col-auto">
-                  <input type="text" name="preq-5" class="form-control" placeholder="Let's finish it with a cycle"
-                    aria-describedby="preq-1" required />
-                  <label class="form-label" for="preq-1">Task #5 Prerequisites</label>
-                </div>
-              </div>
-            </div>
-            <!-- Submit button -->
-            <div id="tasks-submit" class="mb-2">
-              <button id="task-adder" class="btn btn-danger ml-2 mt-2">
-                Add more
-              </button>
-              <button id="network-visualizer" class="btn btn-danger mt-2">
-                Visualize
-              </button>
-            </div>
-          </form>
-          <div id="result"></div>
-          <div id="mynetwork"></div>
-        </section>
-      </main>
-    </div>
     <div class="tab-pane fade" id="sorting-algorithms-tab" role="tabpanel" aria-labelledby="ex3-tab-4">
       <header>
         <nav class="buttons-container navbar navbar-expand-lg navbar-dark bg-dark">
@@ -632,20 +493,7 @@
       <b><u>Click/Hover</u></b> on icons to see <u><b>Shortcuts</u></b>
     </div>
   </div>
-  <div id="fail-kahn-toast" class="toast bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true"
-    data-autohide="false">
-    <div class="toast-header bg-danger text-white">
-      <i class="fas fa-exclamation-triangle fa-lg mr-2"></i>
-      <strong class="mr-auto">Topological Sort</strong>
-      <!-- <button type="button" class="ml-2 my-1 close text-white" data-dismiss="toast"
-              aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button> -->
-    </div>
-    <div class="toast-body">
-      <b>Failed</b> to do <em>Topological Sort</em>, there exists a <b><u>Cycle</b></u>.
-    </div>
-  </div>
+
   <div id="prim-toast" class="toast bg-info text-white" role="alert" aria-live="assertive" aria-atomic="true"
     data-autohide="false" data-content="11000">
     <div class="toast-header bg-info text-white">

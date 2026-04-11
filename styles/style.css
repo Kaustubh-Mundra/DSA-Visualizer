@@ -331,17 +331,7 @@ svg{
   }
 }
 
-#mynetwork{
-  width: 99vw;
-  height: 100vh;
-  border: 1px solid black;
-}
 
-#result{
-    text-align: center;
-    font-size: 2em;
-    color: #262626;
-}
 
 #grid-helper{
   display:flex;
@@ -446,15 +436,7 @@ svg{
 #mst-helper{
   text-align:center;
 }
-#network-helper{
-  display:flex;
-  flex-direction: column;
-  justify-content: space-around;
-  margin-top:1rem;
-}
-#topological-helper{
-  text-align:center;
-}
+
 
 .nav-tabs .nav-link{
     color: rgb(239, 188, 5) !important;
