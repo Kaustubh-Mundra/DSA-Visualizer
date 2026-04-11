@@ -17,7 +17,3 @@ Graph Algorithms visualizer project which visualizes Different types of graph al
     - Recursive Backtracker
 - Minimum Spanning Tree Algorithms 
     - Prim's Algorithm
-
-
-
-[Website](https://path-visualiser-sigma.vercel.app/)
